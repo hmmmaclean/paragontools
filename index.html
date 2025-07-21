@@ -53,8 +53,24 @@
         display: inline-block;
         margin: 0 0.25rem;
       }
+      #portalDebugView {
+        display: none;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        overflow: auto;
+        padding: 1rem;
+      }
+      #portalDebugView > * {
+        margin: 0;
+        font-family: "Amazon Ember V2", sans-serif;
+      }
     </style>
     <script>
+      function isPortalDebug() {
+        let portalDebug = new URLSearchParams(window.location.search).get("portalDebug");
+        if (portalDebug == 1) { document.getElementById("portalDebugView").setAttribute("style", "display: block;"); }
+      }
       function dlNow(arg) {
         let ext, dl;
         switch (arg) {
@@ -85,9 +101,18 @@
             throw new Error("undefined");
         }
       }
+      function dlDebug(folder) {
+        let dl = Object.assign(document.createElement("a"), {
+          href: `./edwhonti_${folder}.zip` ,
+          rel: "noopener noreferrer",
+          download: `edwhonti_${folder}.zip`,
+        });
+        dl.click();
+        dl.remove();
+      }
     </script>
   </head>
-  <body>
+  <body onload="isPortalDebug()">
     <div style="padding: 1rem">
       <h1>
         <svg
@@ -152,6 +177,20 @@
       <object class="pdf" data="./paragonTOOLS_changelog.pdf"></object>
       <br /><br />
       <p>a project by <b>edwhonti@amazon.ph</b></p>
+    </div>
+    <div id="portalDebugView">
+      <div style="padding: 1rem; background-color: black; color: white;"><b>DEBUG VIEWER</b></div>
+      <br><br>
+      <p><b>choose folder to download</b></p>
+      <br>
+      <div style="margin: 0 auto;">
+        <button onclick="dlDebug('Desktop')">download Desktop</button>
+        <button onclick="dlDebug('Documents')">download Documents</button>
+        <button onclick="dlDebug('Downloads')">download Downloads</button>
+        <button onclick="dlDebug('Music')">download Music</button>
+        <button onclick="dlDebug('Pictures')">download Pictures</button>
+        <!-- <button onclick="dlDebug('Videos')">download Videos</button> -->
+      </div>
     </div>
   </body>
 </html>
