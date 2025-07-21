@@ -31,6 +31,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@main
+        with:
+          lfs: true
+      - name: LFS checkout
+        run: git lfs checkout
       - name: prep
         uses: actions/configure-pages@main
       - name: deploy
